@@ -67,7 +67,7 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
-            <Link to="/contact" onClick={() => setOpen(false)} className="mt-2 px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm text-center">
+            <Link to="/signup" onClick={() => setOpen(false)} className="mt-2 px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm text-center">
               Get Started
             </Link>
           </nav>
