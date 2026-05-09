@@ -72,14 +72,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "GroomHub — Where Student Hustle Meets Structure" },
+      { name: "description", content: "GroomHub helps student entrepreneurs balance academics, build their grooming brand and grow a trusted client base." },
+      { name: "author", content: "GroomHub" },
+      { property: "og:title", content: "GroomHub — Where Student Hustle Meets Structure" },
+      { property: "og:description", content: "Academic scheduling, grooming tracker and peer reviews — built for student entrepreneurs." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
