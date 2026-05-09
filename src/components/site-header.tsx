@@ -44,8 +44,8 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-4">
-          <Link to="/contact" className="text-sm font-medium text-foreground/90 hover:text-gold transition">Log In</Link>
-          <Link to="/contact" className="px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm hover:glow-gold transition">
+          <Link to="/signup" className="text-sm font-medium text-foreground/90 hover:text-gold transition">Log In</Link>
+          <Link to="/signup" className="px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm hover:glow-gold transition">
             Get Started
           </Link>
         </div>
@@ -67,7 +67,7 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
-            <Link to="/contact" onClick={() => setOpen(false)} className="mt-2 px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm text-center">
+            <Link to="/signup" onClick={() => setOpen(false)} className="mt-2 px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm text-center">
               Get Started
             </Link>
           </nav>
