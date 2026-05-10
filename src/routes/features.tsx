@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Calendar, Scissors, Users, Package, Camera, Shield, Bell, Sparkles, BookOpen, BarChart3 } from "lucide-react";
+import { Calendar, Scissors, Users, Package, Camera, Shield, Bell, Sparkles, BookOpen, BarChart3, MessagesSquare } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -39,8 +40,9 @@ const groups = [
     tagline: "Community & trust",
     items: [
       { icon: Users, title: "Peer Reviews", desc: "Before/after posts, ratings and comments build a verified reputation." },
+      { icon: MessagesSquare, title: "Social Feed", desc: "A live community feed to share style showcases, tips and inspiration with peers.", to: "/social-feed" },
       { icon: Sparkles, title: "Reputation Badges", desc: "Top-rated stylists get gamified recognition — and more bookings." },
-      { icon: BarChart3, title: "Director Dashboard", desc: "Programme leaders monitor adoption, compliance and engagement." },
+      { icon: BarChart3, title: "Director Dashboard", desc: "Programme leaders monitor adoption, compliance and engagement.", to: "/dashboard" },
     ],
   },
 ];
@@ -71,15 +73,24 @@ function FeaturesPage() {
                   </div>
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
-                  {g.items.map((it) => (
-                    <div key={it.title} className="p-7 rounded-2xl border border-border/60 bg-surface/40 hover:border-gold/40 transition">
-                      <div className="size-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
-                        <it.icon className="size-5 text-gold" />
+                  {g.items.map((it) => {
+                    const to = (it as { to?: string }).to;
+                    const card = (
+                      <div className="p-7 rounded-2xl border border-border/60 bg-surface/40 hover:border-gold/40 transition h-full">
+                        <div className="size-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+                          <it.icon className="size-5 text-gold" />
+                        </div>
+                        <h3 className="font-display text-xl font-bold">{it.title}</h3>
+                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{it.desc}</p>
+                        {to && <p className="mt-4 text-xs text-gold font-semibold">Open →</p>}
                       </div>
-                      <h3 className="font-display text-xl font-bold">{it.title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{it.desc}</p>
-                    </div>
-                  ))}
+                    );
+                    return to ? (
+                      <Link key={it.title} to={to}>{card}</Link>
+                    ) : (
+                      <div key={it.title}>{card}</div>
+                    );
+                  })}
                 </div>
               </div>
             ))}
