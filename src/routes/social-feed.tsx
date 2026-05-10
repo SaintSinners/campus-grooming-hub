@@ -28,7 +28,7 @@ const nav = [
   { icon: ImageIc, label: "Lookbook", to: "/features" },
   { icon: MessagesSquare, label: "Social Feed", to: "/social-feed", active: true },
   { icon: ShieldCheck, label: "Admin", to: "/dashboard" },
-] as const;
+] as Array<{ icon: typeof LayoutDashboard; label: string; to: string; active?: boolean }>;
 
 const posts = [
   {
