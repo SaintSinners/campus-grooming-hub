@@ -36,8 +36,8 @@ function ContactPage() {
 
               <div className="mt-10 space-y-5">
                 {[
-                  { icon: Mail, k: "Email", v: "hello@groomhub.co", href: "mailto:hello@groomhub.co" },
-                  { icon: MessageCircle, k: "WhatsApp", v: "+27 00 000 0000", href: "https://wa.me/27000000000" },
+                  { icon: Mail, k: "Email", v: "st10440562@rcconnect.co.za", href: "mailto:st10440562@rcconnect.co.za" },
+                  { icon: MessageCircle, k: "WhatsApp", v: "071 759 0255", href: "https://wa.me/27717590255" },
                   { icon: MapPin, k: "Based in", v: "Johannesburg, South Africa", href: "#" },
                 ].map((c) => (
                   <a key={c.k} href={c.href} className="flex items-center gap-4 p-5 rounded-2xl border border-border/60 bg-surface/40 hover:border-gold/40 transition">
