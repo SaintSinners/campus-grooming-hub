@@ -7,15 +7,21 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16">
         <div className="grid md:grid-cols-4 gap-12">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="size-9 rounded-full border-2 border-gold flex items-center justify-center">
+            <Link
+              to="/dashboard"
+              aria-label="Open member dashboard"
+              title="Members: open your dashboard"
+              className="group inline-flex items-center gap-3 mb-4 rounded-lg -m-1 p-1 hover:bg-gold/5 transition"
+            >
+              <div className="size-9 rounded-full border-2 border-gold flex items-center justify-center group-hover:shadow-[0_0_20px_oklch(0.78_0.15_80/0.4)] transition">
                 <Scissors className="size-4 text-gold" strokeWidth={2.5} />
               </div>
-              <span className="font-display font-bold text-lg tracking-wider">GROOMHUB</span>
-            </div>
+              <span className="font-display font-bold text-lg tracking-wider group-hover:text-gold transition">GROOMHUB</span>
+            </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Where student hustle meets structure. Built for student entrepreneurs across South Africa.
             </p>
+            <p className="text-[10px] text-gold/70 mt-2 tracking-widest">↑ MEMBERS: TAP LOGO FOR DASHBOARD</p>
           </div>
           <div>
             <h4 className="font-display text-sm tracking-widest text-gold mb-4">PLATFORM</h4>
