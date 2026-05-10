@@ -29,8 +29,8 @@ export function SiteFooter() {
             <h4 className="font-display text-sm tracking-widest text-gold mb-4">SUPPORT</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/contact" className="hover:text-gold">Contact</Link></li>
-              <li><a href="mailto:hello@groomhub.co" className="hover:text-gold">hello@groomhub.co</a></li>
-              <li><a href="https://wa.me/27000000000" className="hover:text-gold">WhatsApp Us</a></li>
+              <li><a href="mailto:st10440562@rcconnect.co.za" className="hover:text-gold">st10440562@rcconnect.co.za</a></li>
+              <li><a href="https://wa.me/27717590255" className="hover:text-gold">WhatsApp Us</a></li>
             </ul>
           </div>
           <div>
@@ -38,7 +38,7 @@ export function SiteFooter() {
             <div className="flex gap-3">
               <a href="#" aria-label="Instagram" className="size-10 rounded-full border border-border/60 flex items-center justify-center hover:border-gold hover:text-gold transition"><Instagram className="size-4" /></a>
               <a href="#" aria-label="Twitter" className="size-10 rounded-full border border-border/60 flex items-center justify-center hover:border-gold hover:text-gold transition"><Twitter className="size-4" /></a>
-              <a href="mailto:hello@groomhub.co" aria-label="Email" className="size-10 rounded-full border border-border/60 flex items-center justify-center hover:border-gold hover:text-gold transition"><Mail className="size-4" /></a>
+              <a href="mailto:st10440562@rcconnect.co.za" aria-label="Email" className="size-10 rounded-full border border-border/60 flex items-center justify-center hover:border-gold hover:text-gold transition"><Mail className="size-4" /></a>
             </div>
           </div>
         </div>
