@@ -19,17 +19,17 @@ export const Route = createFileRoute("/dashboard")({
   component: DashboardPage,
 });
 
-const nav = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: CalendarDays, label: "Bookings" },
-  { icon: CalendarIcon, label: "Calendar" },
-  { icon: Users, label: "Stylists" },
-  { icon: UserSquare2, label: "Students" },
-  { icon: Activity, label: "Grooming Tracker" },
-  { icon: ImageIcon, label: "Lookbook" },
-  { icon: MessagesSquare, label: "Social Feed" },
-  { icon: BarChart3, label: "Reports" },
-  { icon: Settings, label: "Settings" },
+const nav: Array<{ icon: typeof LayoutDashboard; label: string; to: string }> = [
+  { icon: LayoutDashboard, label: "Dashboard", to: "/dashboard" },
+  { icon: CalendarDays, label: "Bookings", to: "/book" },
+  { icon: CalendarIcon, label: "Calendar", to: "/book" },
+  { icon: Users, label: "Stylists", to: "/features" },
+  { icon: UserSquare2, label: "Students", to: "/features" },
+  { icon: Activity, label: "Grooming Tracker", to: "/features" },
+  { icon: ImageIcon, label: "Lookbook", to: "/features" },
+  { icon: MessagesSquare, label: "Social Feed", to: "/social-feed" },
+  { icon: BarChart3, label: "Reports", to: "/dashboard" },
+  { icon: Settings, label: "Settings", to: "/dashboard" },
 ];
 
 const kpis = [
@@ -80,6 +80,7 @@ const slots = ["08:00 – 10:00", "10:00 – 12:00", "12:00 – 14:00", "14:00 �
 
 function DashboardPage() {
   const [active, setActive] = useState("Dashboard");
+  void setActive;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -101,9 +102,9 @@ function DashboardPage() {
 
           <nav className="flex-1 p-3 space-y-1">
             {nav.map((item) => (
-              <button
+              <Link
                 key={item.label}
-                onClick={() => setActive(item.label)}
+                to={item.to}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition ${
                   active === item.label
                     ? "bg-gold/10 text-gold border-l-2 border-gold"
@@ -112,7 +113,7 @@ function DashboardPage() {
               >
                 <item.icon className="size-4" />
                 {item.label}
-              </button>
+              </Link>
             ))}
           </nav>
 
