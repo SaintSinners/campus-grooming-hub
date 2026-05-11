@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Calendar,
@@ -17,6 +17,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import signupModel from "@/assets/signup-model.jpg";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
