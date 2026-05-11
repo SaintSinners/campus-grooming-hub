@@ -1,12 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   LayoutDashboard, CalendarDays, Calendar as CalendarIcon, Activity, ImageIcon,
   MessagesSquare, ShieldCheck, Crown, Settings, LogOut, Bell, Users,
   Image as ImageIc, Scissors, Lightbulb, BarChart3, Plus, Heart,
   MessageCircle, Share2, Bookmark, MoreHorizontal, Hash, Star, SlidersHorizontal,
-  ChevronDown, CheckCircle2,
+  ChevronDown, CheckCircle2, Send,
 } from "lucide-react";
+import { useAuth, initials } from "@/lib/auth";
 
 export const Route = createFileRoute("/social-feed")({
   head: () => ({
