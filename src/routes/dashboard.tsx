@@ -1,11 +1,12 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   LayoutDashboard, CalendarDays, Calendar as CalendarIcon, Users, UserSquare2,
   Activity, ImageIcon, MessagesSquare, BarChart3, Settings, LogOut, Crown,
   Scissors, ShieldCheck, Star, TrendingUp, AlertTriangle, Info, CheckCircle2,
-  Download, UserPlus, FileText, Bell,
+  Download, UserPlus, FileText, Bell, Eye,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth, initials } from "@/lib/auth";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -81,6 +82,17 @@ const slots = ["08:00 – 10:00", "10:00 – 12:00", "12:00 – 14:00", "14:00 �
 function DashboardPage() {
   const [active, setActive] = useState("Dashboard");
   void setActive;
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const profile = user
+    ? {
+        initials: initials(user.name),
+        name: user.name,
+        roleLabel: user.role === "entrepreneur" ? "Stylist" : user.role === "client" ? "Client" : "Director",
+        kicker: user.role === "director" ? "DIRECTOR" : "MEMBER",
+      }
+    : { initials: "MD", name: "Mr. M. Dlamini", roleLabel: "Program Director (Demo)", kicker: "DIRECTOR · DEMO" };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -120,22 +132,42 @@ function DashboardPage() {
           <div className="p-4 border-t border-border/40">
             <div className="flex items-center gap-3 p-2 rounded-lg bg-surface">
               <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center">
-                <span className="text-gold text-sm font-semibold">MD</span>
+                <span className="text-gold text-sm font-semibold">{profile.initials}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[10px] text-gold tracking-widest">DIRECTOR</div>
-                <div className="text-sm font-medium truncate">Mr. M. Dlamini</div>
-                <div className="text-xs text-muted-foreground truncate">Program Director</div>
+                <div className="text-[10px] text-gold tracking-widest">{profile.kicker}</div>
+                <div className="text-sm font-medium truncate">{profile.name}</div>
+                <div className="text-xs text-muted-foreground truncate">{profile.roleLabel}</div>
               </div>
             </div>
-            <button className="mt-3 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-gold border border-border/40">
-              <LogOut className="size-4" /> Log Out
-            </button>
+            {user ? (
+              <button
+                onClick={() => { signOut(); navigate({ to: "/" }); }}
+                className="mt-3 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-gold border border-border/40"
+              >
+                <LogOut className="size-4" /> Log Out
+              </button>
+            ) : (
+              <Link to="/signup" className="mt-3 w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gold border border-gold/40 hover:bg-gold/10">
+                <UserPlus className="size-4" /> Sign In to Personalise
+              </Link>
+            )}
           </div>
         </aside>
 
         {/* Main */}
         <main className="flex-1 p-6 lg:p-8 space-y-6">
+          {!user && (
+            <div className="flex flex-wrap items-center gap-3 p-4 rounded-xl border border-gold/30 bg-gold/5">
+              <Eye className="size-5 text-gold shrink-0" />
+              <p className="text-sm flex-1 min-w-[200px]">
+                You're <span className="text-gold font-semibold">exploring as the Director</span> in demo mode. Create an account to get a personalised dashboard with your own bookings, stats and grooming history.
+              </p>
+              <Link to="/signup" className="px-4 py-2 rounded-lg gradient-gold text-primary-foreground text-sm font-semibold hover:glow-gold transition">
+                Create account
+              </Link>
+            </div>
+          )}
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex items-start gap-4">
