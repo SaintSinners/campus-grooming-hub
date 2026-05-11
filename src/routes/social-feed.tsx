@@ -102,8 +102,44 @@ const rules = [
 
 function SocialFeedPage() {
   const [tab, setTab] = useState<"All Posts" | "Following" | "Mentions">("All Posts");
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [draft, setDraft] = useState("");
+  const [commentDrafts, setCommentDrafts] = useState<Record<number, string>>({});
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
-  return (
+  const me = user?.name ?? "Guest";
+
+  const toggleLike = (id: number) => {
+    setPosts((ps) => ps.map((p) =>
+      p.id === id ? { ...p, liked: !p.liked, likes: p.likes + (p.liked ? -1 : 1) } : p
+    ));
+  };
+  const toggleComments = (id: number) => {
+    setPosts((ps) => ps.map((p) => p.id === id ? { ...p, showComments: !p.showComments } : p));
+  };
+  const addComment = (id: number) => {
+    const text = (commentDrafts[id] ?? "").trim();
+    if (!text) return;
+    setPosts((ps) => ps.map((p) =>
+      p.id === id ? { ...p, comments: [...p.comments, { author: me, text, time: "now" }], showComments: true } : p
+    ));
+    setCommentDrafts((d) => ({ ...d, [id]: "" }));
+  };
+  const sharePost = (id: number) => {
+    setPosts((ps) => ps.map((p) => p.id === id ? { ...p, shares: p.shares + 1 } : p));
+  };
+  const submitPost = () => {
+    const text = draft.trim();
+    if (!text) return;
+    const newPost: Post = {
+      id: Date.now(), name: me, role: user?.role === "entrepreneur" ? "Stylist" : "Member",
+      time: "now", text, tags: [], likes: 0, liked: false, shares: 0, images: 0,
+      comments: [], showComments: false,
+    };
+    setPosts((ps) => [newPost, ...ps]);
+    setDraft("");
+  };
     <div className="min-h-screen bg-background text-foreground">
       <div className="flex">
         {/* Left Sidebar */}
