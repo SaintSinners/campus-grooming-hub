@@ -234,20 +234,25 @@ function SocialFeedPage() {
           {/* Composer */}
           <div className="rounded-xl border border-border/40 bg-surface p-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-full bg-gold/20" />
+              <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center text-gold text-sm font-semibold">
+                {user ? initials(user.name) : "GS"}
+              </div>
               <input
-                placeholder="What's on your mind?"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") submitPost(); }}
+                placeholder={user ? `What's on your mind, ${user.name.split(" ")[0]}?` : "Sign in to share with the community…"}
                 className="flex-1 bg-background/60 border border-border/40 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-gold"
               />
             </div>
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-5 text-xs text-muted-foreground">
-                <button className="flex items-center gap-2 hover:text-gold"><ImageIcon className="size-4 text-gold" /> Photo / Video</button>
-                <button className="flex items-center gap-2 hover:text-gold"><Scissors className="size-4 text-gold" /> Style Showcase</button>
-                <button className="flex items-center gap-2 hover:text-gold"><Lightbulb className="size-4 text-gold" /> Tip / Advice</button>
-                <button className="flex items-center gap-2 hover:text-gold"><BarChart3 className="size-4 text-gold" /> Poll</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><ImageIcon className="size-4 text-gold" /> Photo / Video</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><Scissors className="size-4 text-gold" /> Style Showcase</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><Lightbulb className="size-4 text-gold" /> Tip / Advice</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><BarChart3 className="size-4 text-gold" /> Poll</button>
               </div>
-              <button className="px-5 py-2 rounded-lg bg-gold text-background text-sm font-semibold hover:bg-gold/90">Post</button>
+              <button onClick={submitPost} disabled={!draft.trim()} className="px-5 py-2 rounded-lg bg-gold text-background text-sm font-semibold hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed">Post</button>
             </div>
           </div>
 
