@@ -282,9 +282,11 @@ function SocialFeedPage() {
           {/* Posts */}
           <div className="space-y-4">
             {posts.map((p) => (
-              <article key={p.name} className="rounded-xl border border-border/40 bg-surface p-5">
+              <article key={p.id} className="rounded-xl border border-border/40 bg-surface p-5">
                 <header className="flex items-start gap-3">
-                  <div className="size-10 rounded-full bg-gold/20" />
+                  <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs font-semibold">
+                    {initials(p.name)}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold">{p.name}</div>
                     <div className="text-xs text-muted-foreground">{p.role} · {p.time}</div>
@@ -292,9 +294,11 @@ function SocialFeedPage() {
                   <button className="text-muted-foreground hover:text-foreground"><MoreHorizontal className="size-4" /></button>
                 </header>
                 <p className="mt-3 text-sm">{p.text}</p>
-                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gold">
-                  {p.tags.map((t) => <span key={t}>{t}</span>)}
-                </div>
+                {p.tags.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gold">
+                    {p.tags.map((t) => <span key={t}>{t}</span>)}
+                  </div>
+                )}
 
                 {p.images > 0 && (
                   <div className={`mt-4 grid gap-2 ${p.images === 3 ? "grid-cols-3" : "grid-cols-1"}`}>
@@ -306,12 +310,61 @@ function SocialFeedPage() {
 
                 <footer className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-5">
-                    <button className="flex items-center gap-1.5 hover:text-gold"><Heart className="size-4" /> {p.likes}</button>
-                    <button className="flex items-center gap-1.5 hover:text-gold"><MessageCircle className="size-4" /> {p.comments}</button>
-                    <button className="flex items-center gap-1.5 hover:text-gold"><Share2 className="size-4" /> {p.shares}</button>
+                    <button
+                      onClick={() => toggleLike(p.id)}
+                      aria-pressed={p.liked}
+                      className={`flex items-center gap-1.5 transition ${p.liked ? "text-gold" : "hover:text-gold"}`}
+                    >
+                      <Heart className={`size-4 ${p.liked ? "fill-gold" : ""}`} /> {p.likes}
+                    </button>
+                    <button onClick={() => toggleComments(p.id)} className="flex items-center gap-1.5 hover:text-gold">
+                      <MessageCircle className="size-4" /> {p.comments.length}
+                    </button>
+                    <button onClick={() => sharePost(p.id)} className="flex items-center gap-1.5 hover:text-gold">
+                      <Share2 className="size-4" /> {p.shares}
+                    </button>
                   </div>
                   <button className="hover:text-gold"><Bookmark className="size-4" /></button>
                 </footer>
+
+                {p.showComments && (
+                  <div className="mt-4 pt-4 border-t border-border/40 space-y-3">
+                    {p.comments.length === 0 && (
+                      <p className="text-xs text-muted-foreground">Be the first to comment.</p>
+                    )}
+                    {p.comments.map((c, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="size-8 rounded-full bg-gold/20 flex items-center justify-center text-gold text-[10px] font-semibold shrink-0">
+                          {initials(c.author)}
+                        </div>
+                        <div className="flex-1 rounded-lg bg-background/60 px-3 py-2">
+                          <div className="text-xs font-semibold">{c.author} <span className="ml-1 text-muted-foreground font-normal">· {c.time}</span></div>
+                          <p className="text-sm mt-0.5">{c.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="flex items-center gap-2 pt-1">
+                      <div className="size-8 rounded-full bg-gold/20 flex items-center justify-center text-gold text-[10px] font-semibold shrink-0">
+                        {user ? initials(user.name) : "GS"}
+                      </div>
+                      <input
+                        value={commentDrafts[p.id] ?? ""}
+                        onChange={(e) => setCommentDrafts((d) => ({ ...d, [p.id]: e.target.value }))}
+                        onKeyDown={(e) => { if (e.key === "Enter") addComment(p.id); }}
+                        placeholder="Write a comment…"
+                        className="flex-1 bg-background/60 border border-border/40 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold"
+                      />
+                      <button
+                        onClick={() => addComment(p.id)}
+                        disabled={!(commentDrafts[p.id] ?? "").trim()}
+                        className="size-9 rounded-lg bg-gold text-background flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                        aria-label="Send comment"
+                      >
+                        <Send className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </article>
             ))}
           </div>
