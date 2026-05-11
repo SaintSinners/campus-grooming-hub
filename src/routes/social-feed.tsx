@@ -177,16 +177,16 @@ function SocialFeedPage() {
           </nav>
 
           <div className="p-4 border-t border-border/40 space-y-3">
-            <div className="flex items-center gap-3 p-2 rounded-lg bg-surface">
+            <Link to={user ? "/dashboard" : "/signup"} className="flex items-center gap-3 p-2 rounded-lg bg-surface hover:bg-gold/5 transition">
               <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center">
-                <span className="text-gold text-sm font-semibold">KD</span>
+                <span className="text-gold text-sm font-semibold">{user ? initials(user.name) : "GS"}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium truncate">Kabelo D.</div>
-                <div className="text-xs text-muted-foreground truncate">Student Entrepreneur</div>
+                <div className="text-sm font-medium truncate">{user ? user.name : "Guest"}</div>
+                <div className="text-xs text-muted-foreground truncate">{user ? (user.role === "entrepreneur" ? "Student Entrepreneur" : "Client") : "Sign in to post"}</div>
               </div>
               <ChevronDown className="size-4 text-muted-foreground" />
-            </div>
+            </Link>
             <div className="flex items-center gap-2">
               <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-border/40 text-muted-foreground hover:text-gold">
                 <Settings className="size-4" />
@@ -196,9 +196,15 @@ function SocialFeedPage() {
                 <span className="absolute top-1 right-3 size-1.5 rounded-full bg-gold" />
               </button>
             </div>
-            <Link to="/" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-gold border border-border/40">
-              <LogOut className="size-4" /> Log out
-            </Link>
+            {user ? (
+              <button onClick={() => { signOut(); navigate({ to: "/" }); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-gold border border-border/40">
+                <LogOut className="size-4" /> Log out
+              </button>
+            ) : (
+              <Link to="/signup" className="w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gold border border-gold/40 hover:bg-gold/10">
+                Sign In
+              </Link>
+            )}
           </div>
         </aside>
 
