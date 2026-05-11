@@ -31,7 +31,7 @@ const nav = [
   { icon: ShieldCheck, label: "Admin", to: "/dashboard" },
 ] as Array<{ icon: typeof LayoutDashboard; label: string; to: string; active?: boolean }>;
 
-type Comment = { author: string; text: string; time: string };
+type PostComment = { author: string; text: string; time: string };
 type Post = {
   id: number;
   name: string; role: string; time: string;
@@ -39,7 +39,7 @@ type Post = {
   likes: number; liked: boolean;
   shares: number;
   images: number;
-  comments: Comment[];
+  comments: PostComment[];
   showComments: boolean;
 };
 
