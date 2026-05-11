@@ -1,12 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   LayoutDashboard, CalendarDays, Calendar as CalendarIcon, Activity, ImageIcon,
   MessagesSquare, ShieldCheck, Crown, Settings, LogOut, Bell, Users,
   Image as ImageIc, Scissors, Lightbulb, BarChart3, Plus, Heart,
   MessageCircle, Share2, Bookmark, MoreHorizontal, Hash, Star, SlidersHorizontal,
-  ChevronDown, CheckCircle2,
+  ChevronDown, CheckCircle2, Send,
 } from "lucide-react";
+import { useAuth, initials } from "@/lib/auth";
 
 export const Route = createFileRoute("/social-feed")({
   head: () => ({
@@ -30,27 +31,45 @@ const nav = [
   { icon: ShieldCheck, label: "Admin", to: "/dashboard" },
 ] as Array<{ icon: typeof LayoutDashboard; label: string; to: string; active?: boolean }>;
 
-const posts = [
+type PostComment = { author: string; text: string; time: string };
+type Post = {
+  id: number;
+  name: string; role: string; time: string;
+  text: string; tags: string[];
+  likes: number; liked: boolean;
+  shares: number;
+  images: number;
+  comments: PostComment[];
+  showComments: boolean;
+};
+
+const initialPosts: Post[] = [
   {
-    name: "Sipho K.", role: "Beard Artist", time: "2h ago",
+    id: 1, name: "Sipho K.", role: "Beard Artist", time: "2h ago",
     text: "Fresh line up and beard trim. Confidence booster! ✨",
     tags: ["#BeardGameStrong", "#CleanLook", "#GroomHub"],
-    likes: 124, comments: 18, shares: 9,
-    images: 3,
+    likes: 124, liked: false, shares: 9, images: 3,
+    comments: [
+      { author: "Lebo M.", text: "Clean! Booking you Friday 🔥", time: "1h ago" },
+      { author: "Anele B.", text: "That fade is crisp.", time: "45m ago" },
+    ],
+    showComments: false,
   },
   {
-    name: "Anele B.", role: "Braids Expert", time: "4h ago",
+    id: 2, name: "Anele B.", role: "Braids Expert", time: "4h ago",
     text: "Knotless braids with a clean finish. Protective and stylish! 💛",
     tags: ["#BraidsQueen", "#ProtectiveStyle"],
-    likes: 98, comments: 12, shares: 4,
-    images: 1,
+    likes: 98, liked: false, shares: 4, images: 1,
+    comments: [{ author: "Karabo J.", text: "Booking soon!", time: "2h ago" }],
+    showComments: false,
   },
   {
-    name: "Thando P.", role: "Locs Specialist", time: "6h ago",
+    id: 3, name: "Thando P.", role: "Locs Specialist", time: "6h ago",
     text: "Loc maintenance day. Retwist, cleanse and keep growing! 🌱",
     tags: ["#LocJourney", "#HealthyLocs"],
-    likes: 76, comments: 9, shares: 3,
-    images: 1,
+    likes: 76, liked: false, shares: 3, images: 1,
+    comments: [],
+    showComments: false,
   },
 ];
 
@@ -83,6 +102,44 @@ const rules = [
 
 function SocialFeedPage() {
   const [tab, setTab] = useState<"All Posts" | "Following" | "Mentions">("All Posts");
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [draft, setDraft] = useState("");
+  const [commentDrafts, setCommentDrafts] = useState<Record<number, string>>({});
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const me = user?.name ?? "Guest";
+
+  const toggleLike = (id: number) => {
+    setPosts((ps) => ps.map((p) =>
+      p.id === id ? { ...p, liked: !p.liked, likes: p.likes + (p.liked ? -1 : 1) } : p
+    ));
+  };
+  const toggleComments = (id: number) => {
+    setPosts((ps) => ps.map((p) => p.id === id ? { ...p, showComments: !p.showComments } : p));
+  };
+  const addComment = (id: number) => {
+    const text = (commentDrafts[id] ?? "").trim();
+    if (!text) return;
+    setPosts((ps) => ps.map((p) =>
+      p.id === id ? { ...p, comments: [...p.comments, { author: me, text, time: "now" }], showComments: true } : p
+    ));
+    setCommentDrafts((d) => ({ ...d, [id]: "" }));
+  };
+  const sharePost = (id: number) => {
+    setPosts((ps) => ps.map((p) => p.id === id ? { ...p, shares: p.shares + 1 } : p));
+  };
+  const submitPost = () => {
+    const text = draft.trim();
+    if (!text) return;
+    const newPost: Post = {
+      id: Date.now(), name: me, role: user?.role === "entrepreneur" ? "Stylist" : "Member",
+      time: "now", text, tags: [], likes: 0, liked: false, shares: 0, images: 0,
+      comments: [], showComments: false,
+    };
+    setPosts((ps) => [newPost, ...ps]);
+    setDraft("");
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -120,16 +177,16 @@ function SocialFeedPage() {
           </nav>
 
           <div className="p-4 border-t border-border/40 space-y-3">
-            <div className="flex items-center gap-3 p-2 rounded-lg bg-surface">
+            <Link to={user ? "/dashboard" : "/signup"} className="flex items-center gap-3 p-2 rounded-lg bg-surface hover:bg-gold/5 transition">
               <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center">
-                <span className="text-gold text-sm font-semibold">KD</span>
+                <span className="text-gold text-sm font-semibold">{user ? initials(user.name) : "GS"}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium truncate">Kabelo D.</div>
-                <div className="text-xs text-muted-foreground truncate">Student Entrepreneur</div>
+                <div className="text-sm font-medium truncate">{user ? user.name : "Guest"}</div>
+                <div className="text-xs text-muted-foreground truncate">{user ? (user.role === "entrepreneur" ? "Student Entrepreneur" : "Client") : "Sign in to post"}</div>
               </div>
               <ChevronDown className="size-4 text-muted-foreground" />
-            </div>
+            </Link>
             <div className="flex items-center gap-2">
               <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-border/40 text-muted-foreground hover:text-gold">
                 <Settings className="size-4" />
@@ -139,9 +196,15 @@ function SocialFeedPage() {
                 <span className="absolute top-1 right-3 size-1.5 rounded-full bg-gold" />
               </button>
             </div>
-            <Link to="/" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-gold border border-border/40">
-              <LogOut className="size-4" /> Log out
-            </Link>
+            {user ? (
+              <button onClick={() => { signOut(); navigate({ to: "/" }); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-gold border border-border/40">
+                <LogOut className="size-4" /> Log out
+              </button>
+            ) : (
+              <Link to="/signup" className="w-full flex items-center justify-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gold border border-gold/40 hover:bg-gold/10">
+                Sign In
+              </Link>
+            )}
           </div>
         </aside>
 
@@ -171,20 +234,25 @@ function SocialFeedPage() {
           {/* Composer */}
           <div className="rounded-xl border border-border/40 bg-surface p-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-full bg-gold/20" />
+              <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center text-gold text-sm font-semibold">
+                {user ? initials(user.name) : "GS"}
+              </div>
               <input
-                placeholder="What's on your mind?"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") submitPost(); }}
+                placeholder={user ? `What's on your mind, ${user.name.split(" ")[0]}?` : "Sign in to share with the community…"}
                 className="flex-1 bg-background/60 border border-border/40 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-gold"
               />
             </div>
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-5 text-xs text-muted-foreground">
-                <button className="flex items-center gap-2 hover:text-gold"><ImageIcon className="size-4 text-gold" /> Photo / Video</button>
-                <button className="flex items-center gap-2 hover:text-gold"><Scissors className="size-4 text-gold" /> Style Showcase</button>
-                <button className="flex items-center gap-2 hover:text-gold"><Lightbulb className="size-4 text-gold" /> Tip / Advice</button>
-                <button className="flex items-center gap-2 hover:text-gold"><BarChart3 className="size-4 text-gold" /> Poll</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><ImageIcon className="size-4 text-gold" /> Photo / Video</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><Scissors className="size-4 text-gold" /> Style Showcase</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><Lightbulb className="size-4 text-gold" /> Tip / Advice</button>
+                <button type="button" className="flex items-center gap-2 hover:text-gold"><BarChart3 className="size-4 text-gold" /> Poll</button>
               </div>
-              <button className="px-5 py-2 rounded-lg bg-gold text-background text-sm font-semibold hover:bg-gold/90">Post</button>
+              <button onClick={submitPost} disabled={!draft.trim()} className="px-5 py-2 rounded-lg bg-gold text-background text-sm font-semibold hover:bg-gold/90 disabled:opacity-50 disabled:cursor-not-allowed">Post</button>
             </div>
           </div>
 
@@ -214,9 +282,11 @@ function SocialFeedPage() {
           {/* Posts */}
           <div className="space-y-4">
             {posts.map((p) => (
-              <article key={p.name} className="rounded-xl border border-border/40 bg-surface p-5">
+              <article key={p.id} className="rounded-xl border border-border/40 bg-surface p-5">
                 <header className="flex items-start gap-3">
-                  <div className="size-10 rounded-full bg-gold/20" />
+                  <div className="size-10 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs font-semibold">
+                    {initials(p.name)}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold">{p.name}</div>
                     <div className="text-xs text-muted-foreground">{p.role} · {p.time}</div>
@@ -224,9 +294,11 @@ function SocialFeedPage() {
                   <button className="text-muted-foreground hover:text-foreground"><MoreHorizontal className="size-4" /></button>
                 </header>
                 <p className="mt-3 text-sm">{p.text}</p>
-                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gold">
-                  {p.tags.map((t) => <span key={t}>{t}</span>)}
-                </div>
+                {p.tags.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-gold">
+                    {p.tags.map((t) => <span key={t}>{t}</span>)}
+                  </div>
+                )}
 
                 {p.images > 0 && (
                   <div className={`mt-4 grid gap-2 ${p.images === 3 ? "grid-cols-3" : "grid-cols-1"}`}>
@@ -238,12 +310,61 @@ function SocialFeedPage() {
 
                 <footer className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-5">
-                    <button className="flex items-center gap-1.5 hover:text-gold"><Heart className="size-4" /> {p.likes}</button>
-                    <button className="flex items-center gap-1.5 hover:text-gold"><MessageCircle className="size-4" /> {p.comments}</button>
-                    <button className="flex items-center gap-1.5 hover:text-gold"><Share2 className="size-4" /> {p.shares}</button>
+                    <button
+                      onClick={() => toggleLike(p.id)}
+                      aria-pressed={p.liked}
+                      className={`flex items-center gap-1.5 transition ${p.liked ? "text-gold" : "hover:text-gold"}`}
+                    >
+                      <Heart className={`size-4 ${p.liked ? "fill-gold" : ""}`} /> {p.likes}
+                    </button>
+                    <button onClick={() => toggleComments(p.id)} className="flex items-center gap-1.5 hover:text-gold">
+                      <MessageCircle className="size-4" /> {p.comments.length}
+                    </button>
+                    <button onClick={() => sharePost(p.id)} className="flex items-center gap-1.5 hover:text-gold">
+                      <Share2 className="size-4" /> {p.shares}
+                    </button>
                   </div>
                   <button className="hover:text-gold"><Bookmark className="size-4" /></button>
                 </footer>
+
+                {p.showComments && (
+                  <div className="mt-4 pt-4 border-t border-border/40 space-y-3">
+                    {p.comments.length === 0 && (
+                      <p className="text-xs text-muted-foreground">Be the first to comment.</p>
+                    )}
+                    {p.comments.map((c, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="size-8 rounded-full bg-gold/20 flex items-center justify-center text-gold text-[10px] font-semibold shrink-0">
+                          {initials(c.author)}
+                        </div>
+                        <div className="flex-1 rounded-lg bg-background/60 px-3 py-2">
+                          <div className="text-xs font-semibold">{c.author} <span className="ml-1 text-muted-foreground font-normal">· {c.time}</span></div>
+                          <p className="text-sm mt-0.5">{c.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="flex items-center gap-2 pt-1">
+                      <div className="size-8 rounded-full bg-gold/20 flex items-center justify-center text-gold text-[10px] font-semibold shrink-0">
+                        {user ? initials(user.name) : "GS"}
+                      </div>
+                      <input
+                        value={commentDrafts[p.id] ?? ""}
+                        onChange={(e) => setCommentDrafts((d) => ({ ...d, [p.id]: e.target.value }))}
+                        onKeyDown={(e) => { if (e.key === "Enter") addComment(p.id); }}
+                        placeholder="Write a comment…"
+                        className="flex-1 bg-background/60 border border-border/40 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gold"
+                      />
+                      <button
+                        onClick={() => addComment(p.id)}
+                        disabled={!(commentDrafts[p.id] ?? "").trim()}
+                        className="size-9 rounded-lg bg-gold text-background flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                        aria-label="Send comment"
+                      >
+                        <Send className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </article>
             ))}
           </div>

@@ -1,6 +1,7 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Scissors } from "lucide-react";
+import { Menu, X, Scissors, LogOut } from "lucide-react";
+import { useAuth, initials } from "@/lib/auth";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -13,6 +14,8 @@ const nav = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/40">
@@ -23,7 +26,13 @@ export function SiteHeader() {
           </div>
           <div className="leading-tight">
             <div className="font-display font-bold text-xl tracking-wider">GROOMHUB</div>
-            <div className="text-[9px] tracking-[0.25em] text-muted-foreground">HUSTLE. STYLE. SUCCESS.</div>
+            {user ? (
+              <div className="text-[10px] tracking-[0.2em] text-gold uppercase">
+                {user.name} · {user.role === "entrepreneur" ? "Stylist" : user.role === "client" ? "Client" : "Director"}
+              </div>
+            ) : (
+              <div className="text-[9px] tracking-[0.25em] text-muted-foreground">HUSTLE. STYLE. SUCCESS.</div>
+            )}
           </div>
         </Link>
 
@@ -44,7 +53,23 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-4">
-          <Link to="/signup" className="text-sm font-medium text-foreground/90 hover:text-gold transition">Log In</Link>
+          {user ? (
+            <>
+              <Link to="/dashboard" className="flex items-center gap-2 text-sm font-medium text-foreground/90 hover:text-gold transition">
+                <span className="size-8 rounded-full bg-gold/20 text-gold text-xs font-semibold flex items-center justify-center">{initials(user.name)}</span>
+                Dashboard
+              </Link>
+              <button
+                onClick={() => { signOut(); navigate({ to: "/" }); }}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-gold transition"
+                aria-label="Log out"
+              >
+                <LogOut className="size-4" /> Log Out
+              </button>
+            </>
+          ) : (
+            <Link to="/signup" className="text-sm font-medium text-foreground/90 hover:text-gold transition">Log In</Link>
+          )}
           <Link to="/book" className="px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm hover:glow-gold transition">
             Book a Service
           </Link>
@@ -67,6 +92,14 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
+            {user ? (
+              <>
+                <Link to="/dashboard" onClick={() => setOpen(false)} className="py-2 text-sm font-medium text-gold">Dashboard ({user.name})</Link>
+                <button onClick={() => { signOut(); setOpen(false); navigate({ to: "/" }); }} className="text-left py-2 text-sm font-medium text-muted-foreground">Log Out</button>
+              </>
+            ) : (
+              <Link to="/signup" onClick={() => setOpen(false)} className="py-2 text-sm font-medium">Log In</Link>
+            )}
             <Link to="/book" onClick={() => setOpen(false)} className="mt-2 px-5 py-2.5 rounded-lg gradient-gold text-primary-foreground font-semibold text-sm text-center">
               Book a Service
             </Link>

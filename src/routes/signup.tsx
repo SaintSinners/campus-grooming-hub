@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Calendar,
@@ -17,6 +17,7 @@ import {
   UserPlus,
 } from "lucide-react";
 import signupModel from "@/assets/signup-model.jpg";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -43,6 +44,17 @@ function SignupPage() {
   const [role, setRole] = useState<"entrepreneur" | "client">("entrepreneur");
   const [showPw, setShowPw] = useState(false);
   const [showPw2, setShowPw2] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const finalName = name.trim() || (email.split("@")[0] || "Member");
+    signIn({ name: finalName, email, role });
+    navigate({ to: "/dashboard" });
+  };
 
   return (
     <main className="min-h-screen grid lg:grid-cols-2">
@@ -144,7 +156,7 @@ function SignupPage() {
         {/* top bar */}
         <div className="flex justify-end text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link to="/contact" className="ml-2 text-gold hover:underline font-medium">
+          <Link to="/signup" className="ml-2 text-gold hover:underline font-medium">
             Log In
           </Link>
         </div>
@@ -189,17 +201,17 @@ function SignupPage() {
         {/* form */}
         <form
           className="mt-12 max-w-3xl mx-auto"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit}
         >
           <h2 className="font-display text-3xl font-bold">Create Your Account</h2>
           <p className="text-muted-foreground mt-1">Let's get you started.</p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-5">
             <Field label="Full Name">
-              <InputWithIcon Icon={User} placeholder="Enter your full name" />
+              <InputWithIcon Icon={User} placeholder="Enter your full name" value={name} onChange={(e) => setName(e.target.value)} />
             </Field>
             <Field label="Email Address">
-              <InputWithIcon Icon={Mail} type="email" placeholder="name@university.edu" />
+              <InputWithIcon Icon={Mail} type="email" placeholder="name@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} />
             </Field>
             <Field label="Password">
               <InputWithIcon
@@ -320,7 +332,7 @@ function SignupPage() {
             type="submit"
             className="mt-10 w-full h-14 rounded-xl gradient-gold text-primary-foreground font-semibold text-base flex items-center justify-center gap-2 hover:glow-gold transition"
           >
-            Next: Academic Schedule <ArrowRight className="size-5" />
+            Create Account & Continue <ArrowRight className="size-5" />
           </button>
 
           <p className="mt-4 text-xs text-muted-foreground flex items-center gap-2">
