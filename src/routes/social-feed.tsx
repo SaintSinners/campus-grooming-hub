@@ -31,27 +31,45 @@ const nav = [
   { icon: ShieldCheck, label: "Admin", to: "/dashboard" },
 ] as Array<{ icon: typeof LayoutDashboard; label: string; to: string; active?: boolean }>;
 
-const posts = [
+type Comment = { author: string; text: string; time: string };
+type Post = {
+  id: number;
+  name: string; role: string; time: string;
+  text: string; tags: string[];
+  likes: number; liked: boolean;
+  shares: number;
+  images: number;
+  comments: Comment[];
+  showComments: boolean;
+};
+
+const initialPosts: Post[] = [
   {
-    name: "Sipho K.", role: "Beard Artist", time: "2h ago",
+    id: 1, name: "Sipho K.", role: "Beard Artist", time: "2h ago",
     text: "Fresh line up and beard trim. Confidence booster! ✨",
     tags: ["#BeardGameStrong", "#CleanLook", "#GroomHub"],
-    likes: 124, comments: 18, shares: 9,
-    images: 3,
+    likes: 124, liked: false, shares: 9, images: 3,
+    comments: [
+      { author: "Lebo M.", text: "Clean! Booking you Friday 🔥", time: "1h ago" },
+      { author: "Anele B.", text: "That fade is crisp.", time: "45m ago" },
+    ],
+    showComments: false,
   },
   {
-    name: "Anele B.", role: "Braids Expert", time: "4h ago",
+    id: 2, name: "Anele B.", role: "Braids Expert", time: "4h ago",
     text: "Knotless braids with a clean finish. Protective and stylish! 💛",
     tags: ["#BraidsQueen", "#ProtectiveStyle"],
-    likes: 98, comments: 12, shares: 4,
-    images: 1,
+    likes: 98, liked: false, shares: 4, images: 1,
+    comments: [{ author: "Karabo J.", text: "Booking soon!", time: "2h ago" }],
+    showComments: false,
   },
   {
-    name: "Thando P.", role: "Locs Specialist", time: "6h ago",
+    id: 3, name: "Thando P.", role: "Locs Specialist", time: "6h ago",
     text: "Loc maintenance day. Retwist, cleanse and keep growing! 🌱",
     tags: ["#LocJourney", "#HealthyLocs"],
-    likes: 76, comments: 9, shares: 3,
-    images: 1,
+    likes: 76, liked: false, shares: 3, images: 1,
+    comments: [],
+    showComments: false,
   },
 ];
 
