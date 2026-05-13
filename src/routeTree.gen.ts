@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SocialFeedRouteImport } from './routes/social-feed'
+import { Route as GroomingTrackerRouteImport } from './routes/grooming-tracker'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as GroomingTrackerRouteImport } from './routes/grooming-tracker'
@@ -250,13 +251,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
