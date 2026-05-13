@@ -26,7 +26,7 @@ const nav: Array<{ icon: typeof LayoutDashboard; label: string; to: string }> = 
   { icon: CalendarIcon, label: "Calendar", to: "/book" },
   { icon: Users, label: "Stylists", to: "/features" },
   { icon: UserSquare2, label: "Students", to: "/features" },
-  { icon: Activity, label: "Grooming Tracker", to: "/features" },
+  { icon: Activity, label: "Grooming Tracker", to: "/grooming-tracker" },
   { icon: ImageIcon, label: "Lookbook", to: "/features" },
   { icon: MessagesSquare, label: "Social Feed", to: "/social-feed" },
   { icon: BarChart3, label: "Reports", to: "/dashboard" },
@@ -92,7 +92,7 @@ function DashboardPage() {
         roleLabel: user.role === "entrepreneur" ? "Stylist" : user.role === "client" ? "Client" : "Director",
         kicker: user.role === "director" ? "DIRECTOR" : "MEMBER",
       }
-    : { initials: "MD", name: "Mr. M. Dlamini", roleLabel: "Program Director (Demo)", kicker: "DIRECTOR · DEMO" };
+    : { initials: "KS", name: "K.C Seiphehlo", roleLabel: "Program Director (Demo)", kicker: "DIRECTOR · DEMO" };
 
   return (
     <div className="min-h-screen bg-background text-foreground">

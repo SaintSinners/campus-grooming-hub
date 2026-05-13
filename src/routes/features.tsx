@@ -30,7 +30,7 @@ const groups = [
     label: "Personal Instance",
     tagline: "Self-optimisation layer",
     items: [
-      { icon: Scissors, title: "Grooming Tracker", desc: "A complete service log — what was done, by whom, and when to book again." },
+      { icon: Scissors, title: "Grooming Tracker", desc: "A complete service log — what was done, by whom, and when to book again.", to: "/grooming-tracker" },
       { icon: Camera, title: "Lookbook", desc: "Save reference styles. The system auto-suggests them on future bookings." },
       { icon: Package, title: "Shared Inventory", desc: "Track shared products, oils and tools so the chair is always ready." },
     ],
