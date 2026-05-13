@@ -25,11 +25,6 @@ const SocialFeedRoute = SocialFeedRouteImport.update({
   path: '/social-feed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GroomingTrackerRoute = GroomingTrackerRouteImport.update({
-  id: '/grooming-tracker',
-  path: '/grooming-tracker',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
