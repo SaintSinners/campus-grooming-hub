@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SocialFeedRouteImport } from './routes/social-feed'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as GroomingTrackerRouteImport } from './routes/grooming-tracker'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -32,6 +33,11 @@ const SignupRoute = SignupRouteImport.update({
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GroomingTrackerRoute = GroomingTrackerRouteImport.update({
+  id: '/grooming-tracker',
+  path: '/grooming-tracker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeaturesRoute = FeaturesRouteImport.update({
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/features': typeof FeaturesRoute
+  '/grooming-tracker': typeof GroomingTrackerRoute
   '/how-it-works': typeof HowItWorksRoute
   '/signup': typeof SignupRoute
   '/social-feed': typeof SocialFeedRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/features': typeof FeaturesRoute
+  '/grooming-tracker': typeof GroomingTrackerRoute
   '/how-it-works': typeof HowItWorksRoute
   '/signup': typeof SignupRoute
   '/social-feed': typeof SocialFeedRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/features': typeof FeaturesRoute
+  '/grooming-tracker': typeof GroomingTrackerRoute
   '/how-it-works': typeof HowItWorksRoute
   '/signup': typeof SignupRoute
   '/social-feed': typeof SocialFeedRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/features'
+    | '/grooming-tracker'
     | '/how-it-works'
     | '/signup'
     | '/social-feed'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/features'
+    | '/grooming-tracker'
     | '/how-it-works'
     | '/signup'
     | '/social-feed'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/features'
+    | '/grooming-tracker'
     | '/how-it-works'
     | '/signup'
     | '/social-feed'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   FeaturesRoute: typeof FeaturesRoute
+  GroomingTrackerRoute: typeof GroomingTrackerRoute
   HowItWorksRoute: typeof HowItWorksRoute
   SignupRoute: typeof SignupRoute
   SocialFeedRoute: typeof SocialFeedRoute
@@ -168,6 +181,13 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/how-it-works'
       preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grooming-tracker': {
+      id: '/grooming-tracker'
+      path: '/grooming-tracker'
+      fullPath: '/grooming-tracker'
+      preLoaderRoute: typeof GroomingTrackerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/features': {
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   FeaturesRoute: FeaturesRoute,
+  GroomingTrackerRoute: GroomingTrackerRoute,
   HowItWorksRoute: HowItWorksRoute,
   SignupRoute: SignupRoute,
   SocialFeedRoute: SocialFeedRoute,
