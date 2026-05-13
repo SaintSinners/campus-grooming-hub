@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SocialFeedRouteImport } from './routes/social-feed'
-import { Route as GroomingTrackerRouteImport } from './routes/grooming-tracker'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as GroomingTrackerRouteImport } from './routes/grooming-tracker'
@@ -24,6 +23,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const SocialFeedRoute = SocialFeedRouteImport.update({
   id: '/social-feed',
   path: '/social-feed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GroomingTrackerRoute = GroomingTrackerRouteImport.update({
+  id: '/grooming-tracker',
+  path: '/grooming-tracker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignupRoute = SignupRouteImport.update({
