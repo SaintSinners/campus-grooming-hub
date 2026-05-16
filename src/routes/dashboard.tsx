@@ -175,8 +175,14 @@ function DashboardPage() {
                 <ShieldCheck className="size-6 text-gold" />
               </div>
               <div>
-                <h1 className="font-display text-3xl lg:text-4xl font-bold">Director's Dashboard</h1>
-                <p className="text-muted-foreground text-sm">Overview of system performance and program insights</p>
+                <h1 className="font-display text-3xl lg:text-4xl font-bold">
+                  {user ? `Welcome back, ${user.name.split(" ")[0]}` : "Director's Dashboard"}
+                </h1>
+                <p className="text-muted-foreground text-sm">
+                  {user
+                    ? `Your ${profile.roleLabel.toLowerCase()} overview — bookings, stats and insights.`
+                    : "Overview of system performance and program insights"}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3">

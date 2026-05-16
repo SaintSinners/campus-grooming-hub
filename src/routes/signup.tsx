@@ -46,7 +46,7 @@ function SignupPage() {
   const [showPw2, setShowPw2] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const { signIn } = useAuth();
+  const { user, signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -155,10 +155,15 @@ function SignupPage() {
       <section className="relative px-6 sm:px-10 lg:px-14 py-10 lg:py-14">
         {/* top bar */}
         <div className="flex justify-end text-sm text-muted-foreground">
-          Already have an account?{" "}
-          <Link to="/signup" className="ml-2 text-gold hover:underline font-medium">
-            Log In
-          </Link>
+          {user ? (
+            <>Signed in as <span className="ml-2 text-gold font-medium">{user.name}</span> ·{" "}
+              <Link to="/dashboard" className="ml-2 text-gold hover:underline font-medium">Go to Dashboard</Link>
+            </>
+          ) : (
+            <>Already have an account?{" "}
+              <Link to="/dashboard" className="ml-2 text-gold hover:underline font-medium">Log In</Link>
+            </>
+          )}
         </div>
 
         {/* stepper */}
