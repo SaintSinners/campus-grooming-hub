@@ -46,7 +46,7 @@ function SignupPage() {
   const [showPw2, setShowPw2] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const { signIn } = useAuth();
+  const { user, signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
