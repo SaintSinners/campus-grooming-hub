@@ -241,6 +241,7 @@ function SocialFeedPage() {
                 {user ? initials(user.name) : "GS"}
               </div>
               <input
+                id="composer-input"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") submitPost(); }}
