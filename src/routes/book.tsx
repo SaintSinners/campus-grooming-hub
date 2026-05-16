@@ -255,12 +255,22 @@ function BookPage() {
                   <span className="font-display text-lg">Total</span>
                   <span className="font-display text-2xl font-bold text-gold">{service.price}</span>
                 </div>
-                <button className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl gradient-gold text-primary-foreground font-semibold hover:glow-gold transition">
-                  Confirm Booking <ArrowRight className="size-4" />
+                <button
+                  onClick={() => setConfirmed(true)}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl gradient-gold text-primary-foreground font-semibold hover:glow-gold transition"
+                >
+                  {confirmed ? "Booking Confirmed ✓" : "Confirm Booking"} {!confirmed && <ArrowRight className="size-4" />}
                 </button>
-                <p className="mt-3 text-xs text-muted-foreground inline-flex items-center gap-1.5 justify-center w-full">
-                  <ShieldCheck className="size-3.5 text-gold" /> Your booking is secure and protected
-                </p>
+                {confirmed && (
+                  <p className="mt-3 text-xs text-gold text-center">
+                    {service.name} with {stylist.name} on Wed 14 May at {time}. Check your dashboard for details.
+                  </p>
+                )}
+                {!confirmed && (
+                  <p className="mt-3 text-xs text-muted-foreground inline-flex items-center gap-1.5 justify-center w-full">
+                    <ShieldCheck className="size-3.5 text-gold" /> Your booking is secure and protected
+                  </p>
+                )}
               </div>
 
               <div className="p-6 rounded-2xl border border-border/60 bg-surface/40">
