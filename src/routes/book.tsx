@@ -67,6 +67,7 @@ function BookPage() {
   const [serviceIdx, setServiceIdx] = useState(0);
   const [time, setTime] = useState("15:00");
   const [date] = useState(14);
+  const [confirmed, setConfirmed] = useState(false);
 
   const stylist = stylists[stylistIdx];
   const service = services[serviceIdx];
