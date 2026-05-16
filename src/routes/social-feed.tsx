@@ -221,10 +221,13 @@ function SocialFeedPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gold text-background text-sm font-semibold hover:bg-gold/90">
+              <button
+                onClick={() => document.getElementById("composer-input")?.focus()}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gold text-background text-sm font-semibold hover:bg-gold/90"
+              >
                 <Plus className="size-4" /> Create Post
               </button>
-              <button className="size-10 rounded-lg border border-border/40 flex items-center justify-center text-gold relative">
+              <button aria-label="Notifications" className="size-10 rounded-lg border border-border/40 flex items-center justify-center text-gold relative">
                 <Bell className="size-4" />
                 <span className="absolute top-2 right-2 size-1.5 rounded-full bg-gold" />
               </button>
