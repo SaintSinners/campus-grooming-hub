@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth, initials } from "@/lib/auth";
+import { SiteHeader } from "@/components/site-header";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -96,6 +97,9 @@ function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <div className="lg:hidden">
+        <SiteHeader />
+      </div>
       <div className="flex">
         {/* Sidebar */}
         <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-border/40 min-h-screen sticky top-0">
