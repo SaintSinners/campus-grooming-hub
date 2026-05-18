@@ -143,6 +143,9 @@ function SocialFeedPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <div className="lg:hidden">
+        <SiteHeader />
+      </div>
       <div className="flex">
         {/* Left Sidebar */}
         <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-border/40 min-h-screen sticky top-0">
