@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth, initials } from "@/lib/auth";
+import { SiteHeader } from "@/components/site-header";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
