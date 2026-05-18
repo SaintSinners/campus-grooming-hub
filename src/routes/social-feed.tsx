@@ -8,6 +8,7 @@ import {
   ChevronDown, CheckCircle2, Send,
 } from "lucide-react";
 import { useAuth, initials } from "@/lib/auth";
+import { SiteHeader } from "@/components/site-header";
 
 export const Route = createFileRoute("/social-feed")({
   head: () => ({
