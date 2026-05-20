@@ -77,9 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "GroomHub helps student entrepreneurs balance academics, build their grooming brand and grow a trusted client base." },
       { name: "author", content: "GroomHub" },
       { property: "og:title", content: "GroomHub — Where Student Hustle Meets Structure" },
-      { property: "og:description", content: "Academic scheduling, grooming tracker and peer reviews — built for student entrepreneurs." },
+      { property: "og:description", content: "GroomHub helps student entrepreneurs balance academics, build their grooming brand and grow a trusted client base." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "GroomHub — Where Student Hustle Meets Structure" },
+      { name: "twitter:description", content: "GroomHub helps student entrepreneurs balance academics, build their grooming brand and grow a trusted client base." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/08719123-dff8-4dfb-aad8-d636c1f7e390/id-preview-49b5313f--f12f4012-25f4-4d2e-8143-838eafbae636.lovable.app-1779183983673.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/08719123-dff8-4dfb-aad8-d636c1f7e390/id-preview-49b5313f--f12f4012-25f4-4d2e-8143-838eafbae636.lovable.app-1779183983673.png" },
     ],
     links: [
       {
